@@ -1,6 +1,6 @@
 import os
 import random
-import flask from Flask, request, make_response
+from flask import Flask, request, make_response, render_template
 
 app = Flask(__name__)
 
@@ -15,21 +15,28 @@ def webhook():
     r.headers['Content-Type'] = 'application/json'
     return r
 
+@app.route('/')
+def home():
+    excuse = processRequest()
 
-def processRequest(request):
+    return render_template('home.html', excuse=excuse)
 
-    # Read each line from file
-    with open('bohf_list', 'r') as lines
+def processRequest():
+
     excuses = []
 
-    # Add each to Python list
-    for line in lines:
-        excuses.append(line)
+    # Read each line from file
+    with open('bohf_list.txt', 'r') as lines:
+
+        # Add each to Python list
+        for line in lines:
+            excuses.append(line)
 
     # Return a random excuse
     return random.choice(excuses)
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 5000))
-    print('Starting app on port %d' % port)
-    app.run(debug=False, port=port, host='0.0.0.0')
+    # port = int(os.getenv('PORT', 5000))
+    # print('Starting app on port %d' % port)
+    # app.run(debug=True, port=port, host='127.0.0.1')
+    app.run(host='127.0.0.1', debug=True)
